@@ -8,6 +8,8 @@
 
 class UTextBlock;
 class UEditableTextBox;
+class UButton;
+
 class ABaseballController;
 
 UCLASS()
@@ -29,6 +31,9 @@ protected:
 	UFUNCTION()
 	void OnInputAnswerCommitted(const FText& Text, ETextCommit::Type CommitMethod);
 
+	UFUNCTION()
+	void OnClickReadyButton();
+
 public:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> InputChat;
@@ -38,6 +43,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> InputAnswer;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UButton> ReadyButton;
 	
 	
 	UPROPERTY(meta = (BindWidget))
@@ -46,9 +54,13 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* TextOtherPlayerName;
 
-
 	void SetPlayerNameText(const FString& PlayerName);
-	void UpdateOtherPlayerName(const FString& Name);
 
+private:
+	void BindFunction();
+	void LoseFunction();
+
+	void InitWidget();
+	void SetBaseballPC();
 	TObjectPtr<ABaseballController> BaseballPC = nullptr;
 };

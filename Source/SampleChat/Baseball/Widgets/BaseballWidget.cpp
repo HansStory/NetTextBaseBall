@@ -5,28 +5,42 @@
 
 #include "Components/EditableTextBox.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
+
 #include "Baseball/BaseballController.h"
+#include "Baseball/BaseballGameState.h"
 #include "GameFramework/PlayerState.h"
 
 void UBaseballWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (InputChat->OnTextCommitted.IsAlreadyBound(this, &ThisClass::OnInputChatCommitted) == false)
-	{
-		InputChat->OnTextCommitted.AddDynamic(this, &ThisClass::OnInputChatCommitted);
-	}
+	BindFunction();
 
-	if (InputPlayerName->OnTextCommitted.IsAlreadyBound(this, &ThisClass::OnInputPlayerNameCommitted) == false)
-	{
-		InputPlayerName->OnTextCommitted.AddDynamic(this, &ThisClass::OnInputPlayerNameCommitted);
-	}
+	InitWidget();
+}
 
-	if (InputAnswer->OnTextCommitted.IsAlreadyBound(this, &ThisClass::OnInputAnswerCommitted) == false)
-	{
-		InputAnswer->OnTextCommitted.AddDynamic(this, &ThisClass::OnInputAnswerCommitted);
-	}
+void UBaseballWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
 
+	LoseFunction();
+}
+
+void UBaseballWidget::InitWidget()
+{
+	SetBaseballPC();
+
+	if (IsValid(BaseballPC->PlayerState))
+	{
+		FString playerName = BaseballPC->PlayerState->GetPlayerName();
+
+		SetPlayerNameText(playerName);
+	}
+}
+
+void UBaseballWidget::SetBaseballPC()
+{
 	if (!IsValid(BaseballPC))
 	{
 		APlayerController* OwningPlayerController = GetOwningPlayer();
@@ -36,36 +50,8 @@ void UBaseballWidget::NativeConstruct()
 			if (IsValid(OwningBaseballPC) == true)
 			{
 				BaseballPC = OwningBaseballPC;
-
-				if (IsValid(BaseballPC->PlayerState))
-				{
-					FString playerName = BaseballPC->PlayerState->GetPlayerName();
-
-					SetPlayerNameText(playerName);
-				}
-
 			}
 		}
-	}
-}
-
-void UBaseballWidget::NativeDestruct()
-{
-	Super::NativeDestruct();
-
-	if (InputChat->OnTextCommitted.IsAlreadyBound(this, &ThisClass::OnInputChatCommitted) == true)
-	{
-		InputChat->OnTextCommitted.RemoveDynamic(this, &ThisClass::OnInputChatCommitted);
-	}
-
-	if (InputPlayerName->OnTextCommitted.IsAlreadyBound(this, &ThisClass::OnInputPlayerNameCommitted) == true)
-	{
-		InputPlayerName->OnTextCommitted.RemoveDynamic(this, &ThisClass::OnInputPlayerNameCommitted);
-	}
-
-	if (InputAnswer->OnTextCommitted.IsAlreadyBound(this, &ThisClass::OnInputAnswerCommitted) == true)
-	{
-		InputAnswer->OnTextCommitted.RemoveDynamic(this, &ThisClass::OnInputAnswerCommitted);
 	}
 }
 
@@ -105,6 +91,17 @@ void UBaseballWidget::OnInputAnswerCommitted(const FText& Text, ETextCommit::Typ
 	}
 }
 
+void UBaseballWidget::OnClickReadyButton()
+{
+	if (IsValid(BaseballPC))
+	{
+		BaseballPC->Server_PlayerReady();
+		ReadyButton->SetIsEnabled(false);
+		//BaseballPC->Server_SendAnswer(Text.ToString());
+		//InputAnswer->SetText(FText());
+	}
+}
+
 void UBaseballWidget::SetPlayerNameText(const FString& PlayerName)
 {
 	if (IsValid(TextMyPlayerName))
@@ -113,11 +110,59 @@ void UBaseballWidget::SetPlayerNameText(const FString& PlayerName)
 	}
 }
 
-void UBaseballWidget::UpdateOtherPlayerName(const FString& Name)
+//void UBaseballWidget::UpdateOtherPlayerName(const FString& Name)
+//{
+//	if (IsValid(TextOtherPlayerName))
+//	{
+//		TextOtherPlayerName->SetText(FText::FromString(Name));
+//	}
+//}
+
+void UBaseballWidget::BindFunction()
 {
-	if (IsValid(TextOtherPlayerName))
+	if (IsValid(InputChat) && InputChat->OnTextCommitted.IsAlreadyBound(this, &UBaseballWidget::OnInputChatCommitted) == false)
 	{
-		TextOtherPlayerName->SetText(FText::FromString(Name));
+		InputChat->OnTextCommitted.AddDynamic(this, &UBaseballWidget::OnInputChatCommitted);
+	}
+
+	if (IsValid(InputPlayerName) && InputPlayerName->OnTextCommitted.IsAlreadyBound(this, &UBaseballWidget::OnInputPlayerNameCommitted) == false)
+	{
+		InputPlayerName->OnTextCommitted.AddDynamic(this, &UBaseballWidget::OnInputPlayerNameCommitted);
+	}
+
+	if (IsValid(InputAnswer) && InputAnswer->OnTextCommitted.IsAlreadyBound(this, &UBaseballWidget::OnInputAnswerCommitted) == false)
+	{
+		InputAnswer->OnTextCommitted.AddDynamic(this, &UBaseballWidget::OnInputAnswerCommitted);
+	}
+
+	if (IsValid(ReadyButton) && ReadyButton->OnClicked.IsAlreadyBound(this, &UBaseballWidget::OnClickReadyButton) == false)
+	{
+		ReadyButton->OnClicked.AddDynamic(this, &UBaseballWidget::OnClickReadyButton);
 	}
 }
+
+void UBaseballWidget::LoseFunction()
+{
+	if (IsValid(InputChat) && InputChat->OnTextCommitted.IsAlreadyBound(this, &UBaseballWidget::OnInputChatCommitted) == true)
+	{
+		InputChat->OnTextCommitted.RemoveDynamic(this, &UBaseballWidget::OnInputChatCommitted);
+	}
+
+	if (IsValid(InputPlayerName) && InputPlayerName->OnTextCommitted.IsAlreadyBound(this, &UBaseballWidget::OnInputPlayerNameCommitted) == true)
+	{
+		InputPlayerName->OnTextCommitted.RemoveDynamic(this, &UBaseballWidget::OnInputPlayerNameCommitted);
+	}
+
+	if (IsValid(InputAnswer) && InputAnswer->OnTextCommitted.IsAlreadyBound(this, &UBaseballWidget::OnInputAnswerCommitted) == true)
+	{
+		InputAnswer->OnTextCommitted.RemoveDynamic(this, &UBaseballWidget::OnInputAnswerCommitted);
+	}
+
+	if (IsValid(ReadyButton) && ReadyButton->OnClicked.IsAlreadyBound(this, &UBaseballWidget::OnClickReadyButton) == true)
+	{
+		ReadyButton->OnClicked.RemoveDynamic(this, &UBaseballWidget::OnClickReadyButton);
+	}
+}
+
+
 
