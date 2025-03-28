@@ -1,4 +1,4 @@
-#include "Baseball/BaseballController.h"
+ï»¿#include "Baseball/BaseballController.h"
 
 #include "Baseball/Widgets/BaseballWidget.h"
 #include "Baseball/Widgets/EntryWidget.h"
@@ -33,7 +33,7 @@ void ABaseballController::BeginPlay()
 
 		}
 
-		// EntryWidget »ı¼º ¹× Ç¥½Ã
+		// EntryWidget ìƒì„± ë° í‘œì‹œ
 		//EntryWidgetInstance = CreateWidget<UEntryWidget>(this, EntryWidgetClass);
 		//if (EntryWidgetInstance)
 		//{
@@ -62,38 +62,38 @@ void ABaseballController::OnRep_PlayerState()
 }
 
 
-void ABaseballController::ShowEntryWidget()
-{
-}
-
-void ABaseballController::ShowMainWidget()
-{
-	if (!IsLocalPlayerController()) return;
-
-	if (EntryWidgetInstance)
-	{
-		EntryWidgetInstance->RemoveFromParent();
-		EntryWidgetInstance = nullptr;
-	}
-
-	if (IsValid(MainWidgetClass))
-	{
-		MainWidgetInstance = CreateWidget<UMainWidget>(this, MainWidgetClass);
-		if (MainWidgetInstance)
-		{
-			MainWidgetInstance->AddToViewport();
-		}
-	}
-}
+//void ABaseballController::ShowEntryWidget()
+//{
+//}
+//
+//void ABaseballController::ShowMainWidget()
+//{
+//	if (!IsLocalPlayerController()) return;
+//
+//	if (EntryWidgetInstance)
+//	{
+//		EntryWidgetInstance->RemoveFromParent();
+//		EntryWidgetInstance = nullptr;
+//	}
+//
+//	if (IsValid(MainWidgetClass))
+//	{
+//		MainWidgetInstance = CreateWidget<UMainWidget>(this, MainWidgetClass);
+//		if (MainWidgetInstance)
+//		{
+//			MainWidgetInstance->AddToViewport();
+//		}
+//	}
+//}
 
 void ABaseballController::Server_SendMessage_Implementation(const FString& Message)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Server_SendMessage : %s"), *Message);
 
-	ABaseballGameMode* GM = GetWorld()->GetAuthGameMode<ABaseballGameMode>();
-	if (GM)
+	ABaseballGameMode* BasballGM = GetWorld()->GetAuthGameMode<ABaseballGameMode>();
+	if (BasballGM)
 	{
-		GM->RecieveMessageFromClient(this, Message);
+		BasballGM->RecieveMessageFromClient(this, Message);
 	}
 
 }
@@ -101,17 +101,31 @@ void ABaseballController::Server_SendMessage_Implementation(const FString& Messa
 void ABaseballController::Server_SetPlayerName_Implementation(const FString& Message)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Server_SetPlayerName : %s"), *Message);
-	ABaseballGameMode* GM = GetWorld()->GetAuthGameMode<ABaseballGameMode>();
-	if (GM)
+	ABaseballGameMode* BasballGM = GetWorld()->GetAuthGameMode<ABaseballGameMode>();
+	if (BasballGM)
 	{
-		GM->SetPlayerNickname(this, Message);
+		BasballGM->SetPlayerNickname(this, Message);
 	}
 }
 
-void ABaseballController::Server_SendAnswer_Implementation(const FString& Message)
+void ABaseballController::Server_SendAnswer_Implementation(const FString& Answer)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Server_SendAnswer Name : %s"), *Message);
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Server_SendAnswer : %s"), *PlayerState->GetPlayerName(), *Answer);
 
+	ABaseballGameMode* BasballGM = GetWorld()->GetAuthGameMode<ABaseballGameMode>();
+	if (BasballGM)
+	{
+		BasballGM->ReceiveAnswerFromClient(this, Answer);
+	}
+}
+
+void ABaseballController::Server_PlayerReady_Implementation()
+{
+	ABaseballGameMode* BasballGM = GetWorld()->GetAuthGameMode<ABaseballGameMode>();
+	if (BasballGM)
+	{
+		BasballGM->PlayerReady(this);
+	}
 }
 
 void ABaseballController::Client_ReceiveMessage_Implementation(const FString& Message)
@@ -148,90 +162,6 @@ void ABaseballController::SetPlayerName(const FString& PlayerName)
 	//}
 }
 
-void ABaseballController::Client_ShowMainWidget_Implementation()
-{
-	if (!IsLocalPlayerController()) return;
-
-	if (EntryWidgetInstance)
-	{
-		EntryWidgetInstance->RemoveFromParent();
-		EntryWidgetInstance = nullptr;
-	}
-
-	if (IsValid(MainWidgetClass))
-	{
-		MainWidgetInstance = CreateWidget<UMainWidget>(this, MainWidgetClass);
-		if (MainWidgetInstance)
-		{
-			MainWidgetInstance->AddToViewport();
-
-			AGameStateBase* GameState = GetWorld()->GetGameState();
-			if (GameState)
-			{
-				TArray<ABaseballPlayerState*> PlayerStates;
-
-				for (APlayerState* PS : GameState->PlayerArray)
-				{
-					ABaseballPlayerState* BaseballPS = Cast<ABaseballPlayerState>(PS);
-					if (BaseballPS)
-					{
-						PlayerStates.Add(BaseballPS);
-						//BaseballPS->OnPlayerNameChanged.AddDynamic(this, &AMyPlayerController::HandleOtherPlayerNameChanged);
-					}
-				}
-
-				MainWidgetInstance->InitMainWidget(PlayerStates);
-			}
-
-		}
-	}
-}
-
-
-
-
-void ABaseballController::Client_UpdateOtherPlayerName_Implementation(int32 Index, const FString& OtherPlayerName) const
-{
-	if (MainWidgetInstance)
-	{
-		//MainWidgetInstance->SetPlayerName(Index, OtherPlayerName);
-	}
-}
-
-
-
-void ABaseballController::Server_JoinGame_Implementation(const FString& NewPlayerName)
-{
-	if (ABaseballGameState* BaseballGS = Cast<ABaseballGameState>(GetWorld()->GetGameState()))
-	{
-		if (ABaseballPlayerState* BaseballPS = Cast<ABaseballPlayerState>(PlayerState))
-		{
-			// TO DO : 
-			BaseballGS->JoinGame(BaseballPS, NewPlayerName);
-		}
-	}
-}
-
-
-bool ABaseballController::Server_JoinGame_Validate(const FString& NewPlayerName)
-{
-	return true;
-}
-
-void ABaseballController::Client_JoinGame_Implementation(bool bIsHost)
-{
-	if (EntryWidgetInstance->IsInViewport())
-	{
-		EntryWidgetInstance->RemoveFromParent();
-	}
-
-	if (MainWidgetInstance)
-	{
-		MainWidgetInstance->AddToViewport();
-
-		//MainWidgetInstance->SetPlayerName(0, PlayerState->GetPlayerName());
-	}
-}
 
 
 
@@ -256,11 +186,89 @@ void ABaseballController::Client_JoinGame_Implementation(bool bIsHost)
 
 
 
+//void ABaseballController::Client_ShowMainWidget_Implementation()
+//{
+//	if (!IsLocalPlayerController()) return;
+//
+//	if (EntryWidgetInstance)
+//	{
+//		EntryWidgetInstance->RemoveFromParent();
+//		EntryWidgetInstance = nullptr;
+//	}
+//
+//	if (IsValid(MainWidgetClass))
+//	{
+//		MainWidgetInstance = CreateWidget<UMainWidget>(this, MainWidgetClass);
+//		if (MainWidgetInstance)
+//		{
+//			MainWidgetInstance->AddToViewport();
+//
+//			AGameStateBase* GameState = GetWorld()->GetGameState();
+//			if (GameState)
+//			{
+//				TArray<ABaseballPlayerState*> PlayerStates;
+//
+//				for (APlayerState* PS : GameState->PlayerArray)
+//				{
+//					ABaseballPlayerState* BaseballPS = Cast<ABaseballPlayerState>(PS);
+//					if (BaseballPS)
+//					{
+//						PlayerStates.Add(BaseballPS);
+//						//BaseballPS->OnPlayerNameChanged.AddDynamic(this, &AMyPlayerController::HandleOtherPlayerNameChanged);
+//					}
+//				}
+//
+//				MainWidgetInstance->InitMainWidget(PlayerStates);
+//			}
+//
+//		}
+//	}
+//}
+
+//
+//
+//void ABaseballController::Client_UpdateOtherPlayerName_Implementation(int32 Index, const FString& OtherPlayerName) const
+//{
+//	if (MainWidgetInstance)
+//	{
+//		//MainWidgetInstance->SetPlayerName(Index, OtherPlayerName);
+//	}
+//}
+//
 
 
-
-
-
+//void ABaseballController::Server_JoinGame_Implementation(const FString& NewPlayerName)
+//{
+//	if (ABaseballGameState* BaseballGS = Cast<ABaseballGameState>(GetWorld()->GetGameState()))
+//	{
+//		if (ABaseballPlayerState* BaseballPS = Cast<ABaseballPlayerState>(PlayerState))
+//		{
+//			// TO DO : 
+//			//BaseballGS->JoinGame(BaseballPS, NewPlayerName);
+//		}
+//	}
+//}
+//
+//
+//bool ABaseballController::Server_JoinGame_Validate(const FString& NewPlayerName)
+//{
+//	return true;
+//}
+//
+//void ABaseballController::Client_JoinGame_Implementation(bool bIsHost)
+//{
+//	if (EntryWidgetInstance->IsInViewport())
+//	{
+//		EntryWidgetInstance->RemoveFromParent();
+//	}
+//
+//	if (MainWidgetInstance)
+//	{
+//		MainWidgetInstance->AddToViewport();
+//
+//		//MainWidgetInstance->SetPlayerName(0, PlayerState->GetPlayerName());
+//	}
+//}
 
 
 //void ABaseballController::SendMessageToServer_Implementation(const FString& Message)
@@ -410,7 +418,7 @@ void ABaseballController::Client_JoinGame_Implementation(bool bIsHost)
 //{
 //	PlayerNickname = PlayerName;
 //
-//	// ¼­¹ö¿¡¼­ ¸ğµç ÇÃ·¹ÀÌ¾î Á¤º¸ ·Î±ë
+//	// ì„œë²„ì—ì„œ ëª¨ë“  í”Œë ˆì´ì–´ ì •ë³´ ë¡œê¹…
 //	int32 PlayerIndex = 0;
 //	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 //	{
@@ -443,17 +451,17 @@ void ABaseballController::Client_JoinGame_Implementation(bool bIsHost)
 //
 //	}
 //
-//	// ·ÎÄÃ ÇÃ·¹ÀÌ¾îÀÎ °æ¿ì¿¡¸¸ UI ¾÷µ¥ÀÌÆ®
+//	// ë¡œì»¬ í”Œë ˆì´ì–´ì¸ ê²½ìš°ì—ë§Œ UI ì—…ë°ì´íŠ¸
 //	//if (IsLocalController())
 //	//{
-//	//	// EntryWidget Á¦°Å
+//	//	// EntryWidget ì œê±°
 //	//	if (EntryWidgetInstance)
 //	//	{
 //	//		EntryWidgetInstance->RemoveFromParent();
 //	//		EntryWidgetInstance = nullptr;
 //	//	}
 //
-//	//	// MainWidget »ı¼º
+//	//	// MainWidget ìƒì„±
 //	//	if (MainWidgetClass)
 //	//	{
 //	//		MainWidgetInstance = CreateWidget<UMainWidget>(this, MainWidgetClass);
@@ -461,7 +469,7 @@ void ABaseballController::Client_JoinGame_Implementation(bool bIsHost)
 //	//		{
 //	//			MainWidgetInstance->AddToViewport();
 //
-//	//			// Å¬¶óÀÌ¾ğÆ®¿¡¼­´Â ÀÚ½ÅÀÇ Á¤º¸¸¸ Ç¥½Ã
+//	//			// í´ë¼ì´ì–¸íŠ¸ì—ì„œëŠ” ìì‹ ì˜ ì •ë³´ë§Œ í‘œì‹œ
 //	//			int32 LocalPlayerIndex = 0;
 //	//			if (GetWorld())
 //	//			{

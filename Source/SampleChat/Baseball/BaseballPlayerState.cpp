@@ -9,6 +9,12 @@ ABaseballPlayerState::ABaseballPlayerState()
 	bReplicates = true;
 }
 
+void ABaseballPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ABaseballPlayerState, TryCount);
+}
+
 ABaseballController* ABaseballPlayerState::GetBaseballController() const
 {
 	ABaseballController* BaseballPC = nullptr;
@@ -34,3 +40,13 @@ void ABaseballPlayerState::OnRep_PlayerName()
 		BaseballPC->SetPlayerName(*ChangedName);
 	}
 }
+
+void ABaseballPlayerState::IncreseTryCount()
+{
+	TryCount++;
+}
+
+//void ABaseballPlayerState::SetReady(bool isReady)
+//{
+//	bIsReady = isReady;
+//}

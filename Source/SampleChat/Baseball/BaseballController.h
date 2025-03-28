@@ -45,11 +45,11 @@ public:
 	TObjectPtr<UResultWidget> ResultWidgetInstance;
 #pragma endregion
 
-	UFUNCTION()
-	void ShowEntryWidget();
+	//UFUNCTION()
+	//void ShowEntryWidget();
 
-	UFUNCTION()
-	void ShowMainWidget();
+	//UFUNCTION()
+	//void ShowMainWidget();
 
 	UFUNCTION(Server, Reliable)
 	void Server_SendMessage(const FString& Message);
@@ -58,7 +58,12 @@ public:
 	void Server_SetPlayerName(const FString& Message);
 
 	UFUNCTION(Server, Reliable)
-	void Server_SendAnswer(const FString& Message);
+	void Server_SendAnswer(const FString& Answer);
+
+
+	UFUNCTION(Server, Reliable)
+	void Server_PlayerReady();
+
 
 	UFUNCTION(Client, Reliable)
 	void Client_ReceiveMessage(const FString& Message);
@@ -68,20 +73,22 @@ public:
 
 
 	void SetPlayerName(const FString& PlayerName);
-	UFUNCTION(Client, Reliable)
-	void Client_ShowMainWidget();
 
 
-	// 게임 참가 시도
-	UFUNCTION(Server, Reliable, WithValidation)
-	void Server_JoinGame(const FString& NewPlayerName);
+	//UFUNCTION(Client, Reliable)
+	//void Client_ShowMainWidget();
 
-	// 게임 참가
-	UFUNCTION(Client, Reliable)
-	void Client_JoinGame(bool bIsHost);
 
-	// 다른 플레이어 위젯 업데이트
-	UFUNCTION(Client, Reliable)
-	void Client_UpdateOtherPlayerName(int32 Index, const FString& OtherPlayerName) const;
+	//// 게임 참가 시도
+	//UFUNCTION(Server, Reliable, WithValidation)
+	//void Server_JoinGame(const FString& NewPlayerName);
+
+	//// 게임 참가
+	//UFUNCTION(Client, Reliable)
+	//void Client_JoinGame(bool bIsHost);
+
+	//// 다른 플레이어 위젯 업데이트
+	//UFUNCTION(Client, Reliable)
+	//void Client_UpdateOtherPlayerName(int32 Index, const FString& OtherPlayerName) const;
 
 };
