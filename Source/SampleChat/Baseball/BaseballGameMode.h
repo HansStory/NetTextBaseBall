@@ -46,7 +46,7 @@ public:
 
 	void GenerateRandomNum();
 	FString GetGeneratedNum() { return ServerGenerateNum; }
-	FString ValidateAndCheckGuess(const FString& Input, const FString& SecretNumber);
+	FString ValidateAndCheckGuess(const FString& Input);
 
 private:
 	TArray<TObjectPtr<ABaseballController>> AllPlayerControllers;
