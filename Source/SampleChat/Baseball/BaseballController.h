@@ -65,6 +65,14 @@ public:
 	UFUNCTION(Client, Reliable)
 	void Client_ReceiveAnswer(const FString& Message);
 
+	UFUNCTION(Client, Reliable)
+	void Client_OnGameStart();
+
+	UFUNCTION(Client, Reliable)
+	void Client_OnGameEnd();
+
+	UFUNCTION(Client, Reliable)
+	void Client_OnGameReset();
 
 	void SetPlayerName(const FString& PlayerName);
 

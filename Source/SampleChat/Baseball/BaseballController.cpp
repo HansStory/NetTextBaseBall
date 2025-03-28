@@ -91,7 +91,7 @@ void ABaseballController::Server_PlayerReady_Implementation()
 
 void ABaseballController::Client_ReceiveMessage_Implementation(const FString& Message)
 {
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Client Receive Message : %s"), *PlayerState->GetPlayerName(), *Message);
+	UE_LOG(LogTemp, Log, TEXT("[%s] Client Receive Message : %s"), *PlayerState->GetPlayerName(), *Message);
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, Message);
@@ -100,10 +100,35 @@ void ABaseballController::Client_ReceiveMessage_Implementation(const FString& Me
 
 void ABaseballController::Client_ReceiveAnswer_Implementation(const FString& Answer)
 {
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Client Receive Answer : %s"), *PlayerState->GetPlayerName(), *Answer);
+	//UE_LOG(LogTemp, Warning, TEXT("[%s] Client Receive Answer : %s"), *PlayerState->GetPlayerName(), *Answer);
 
 }
 
+void ABaseballController::Client_OnGameStart_Implementation()
+{
+	UE_LOG(LogTemp, Log, TEXT("[%s] OnGameStart"), *PlayerState->GetPlayerName());
+
+	if (IsValid(BaseballWidgetInstance))
+	{
+		BaseballWidgetInstance->OnGameStart();
+	}
+}
+
+void ABaseballController::Client_OnGameEnd_Implementation()
+{
+	UE_LOG(LogTemp, Log, TEXT("[%s] OnGameEnd"), *PlayerState->GetPlayerName());
+
+}
+
+void ABaseballController::Client_OnGameReset_Implementation()
+{
+	UE_LOG(LogTemp, Log, TEXT("[%s] OnGameReset"), *PlayerState->GetPlayerName());
+
+	if (IsValid(BaseballWidgetInstance))
+	{
+		BaseballWidgetInstance->OnGameReset();
+	}
+}
 
 void ABaseballController::SetPlayerName(const FString& PlayerName)
 {

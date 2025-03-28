@@ -41,8 +41,12 @@ public:
 	//UFUNCTION(Server, Reliable)
 	void ReceiveAnswerFromClient(APlayerController* PlayerController, const FString& Answer);
 
-
 	void PlayerReady(APlayerController* PlayerController);
+	void GameStart();
+	void GameEnd();
+	void ResetGame();
+
+	void CheckGameEndCondition(ABaseballController* CurrentPlayer);
 
 	void GenerateRandomNum();
 	FString GetGeneratedNum() { return ServerGenerateNum; }
@@ -55,6 +59,7 @@ private:
 	FString ServerGenerateNum;
 
 	EGameState CurrentGameState = EGameState::Waiting;
-	void GameStart();
-	void GameEnd();
+	bool bGameEnded = false;
+
+	FTimerHandle TimerHandle_ResetGame;
 };

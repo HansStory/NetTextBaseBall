@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Baseball/BaseballFunctionLibrary.h"
@@ -24,35 +24,36 @@ FString UBaseballFunctionLibrary::GenerateRandomNum()
 
 FString UBaseballFunctionLibrary::ValidateAndCheckInput(const FString& Input, const FString& GenerateNum)
 {
-	// ÀÔ·Â °ËÁõ
+	// ì…ë ¥ ê²€ì¦
 	if (!Input.StartsWith("/"))
 	{
-		return FString(TEXT("[Error] / ÀÔ·ÂÇÏÁö ¾ÊÀ½ : OUT"));
+		return FString(TEXT("[OUT] ì…ë ¥ ì„œì‹ X"));
 	}
 
-	FString Guess = Input.Mid(1); // '/' ÀÌÈÄÀÇ ¹®ÀÚ¿­ ÃßÃâ
+	FString Guess = Input.Mid(1); // '/' ì´í›„ì˜ ë¬¸ìì—´ ì¶”ì¶œ
 
 	if (Guess.Len() != 3)
 	{
-		return FString(TEXT("[Error] ÀÔ·Â ±æÀÌ ÃÊ°ú : OUT"));
+		return FString(TEXT("[OUT] ì…ë ¥ ê¸¸ì´ ì´ˆê³¼"));
 	}
 	else if (!Guess.IsNumeric())
 	{
-		return FString(TEXT("[Error] ¼ıÀÚ°¡ ¾Æ´Ô : OUT"));
+		return FString(TEXT("[OUT] ìˆ«ì ì…ë ¥ X"));
 	}
 
-	// Áßº¹ ¼ıÀÚ °Ë»ç
+	// ì¤‘ë³µ ìˆ«ì ê²€ì‚¬
 	TSet<TCHAR> UniqueDigits;
 	for (TCHAR Digit : Guess)
 	{
 		if (Digit < '1' || Digit > '9' || UniqueDigits.Contains(Digit))
 		{
-			return FString(TEXT("[Error] Áßº¹µÈ °ª ÀÔ·Â : OUT"));
+			return "OUT";
+			//return FString(TEXT("[OUT] : ì¤‘ë³µëœ ìˆ«ì ì…ë ¥"));  <== ì™œ ì•ˆë˜ëŠ”ì§€ ëª¨ë¥´ê² ìŒ
 		}
 		UniqueDigits.Add(Digit);
 	}
 
-	// ½ºÆ®¶óÀÌÅ© ¹× º¼ °³¼ö °è»ê
+	// ìŠ¤íŠ¸ë¼ì´í¬ ë° ë³¼ ê°œìˆ˜ ê³„ì‚°
 	int32 Strikes = 0;
 	int32 Balls = 0;
 
@@ -68,10 +69,10 @@ FString UBaseballFunctionLibrary::ValidateAndCheckInput(const FString& Input, co
 		}
 	}
 
-	// °á°ú ¹İÈ¯
+	// ê²°ê³¼ ë°˜í™˜
 	if (Strikes == 3)
 	{
-		return FString(TEXT("3S 0B ¢¡ Win"));
+		return FString(TEXT("3S 0B â‡’ Win"));
 	}
 	else if (Strikes == 0 && Balls == 0)
 	{

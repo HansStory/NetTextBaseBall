@@ -26,10 +26,22 @@ public:
 	int32 GetTryCount() { return TryCount; }
 	void IncreseTryCount();
 
+	bool IsOut() const { return bIsOut; }
+	void SetOut(bool bOut) { bIsOut = bOut; }
+
+	void Reset()
+	{
+		TryCount = 0;
+		bIsOut = false;
+	}
+
 protected:
 	UPROPERTY(Replicated)
 	int32 TryCount = 0;
 	int32 MaxTryCount = 3;
+
+private:
+	bool bIsOut = false;
 
 	//bool bIsReady = false;
 
