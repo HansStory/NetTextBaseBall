@@ -51,9 +51,6 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextMyPlayerName;
 
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* TextOtherPlayerName;
-
 	void SetPlayerNameText(const FString& PlayerName);
 	void SetInputAnswerEnable(bool bIsEnable);
 	void OnGameStart();

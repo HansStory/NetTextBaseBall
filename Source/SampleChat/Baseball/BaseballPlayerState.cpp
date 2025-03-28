@@ -67,8 +67,3 @@ void ABaseballPlayerState::OnRep_TryCountChange()
 		}
 	}
 }
-
-//void ABaseballPlayerState::SetReady(bool isReady)
-//{
-//	bIsReady = isReady;
-//}

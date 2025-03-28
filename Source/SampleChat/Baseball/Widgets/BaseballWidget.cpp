@@ -133,7 +133,7 @@ void UBaseballWidget::OnGameReset()
 		ReadyButton->SetIsEnabled(true);
 	}
 
-	if (IsValid(InputAnswer)
+	if (IsValid(InputAnswer))
 	{
 		InputAnswer->SetIsEnabled(false);
 	}

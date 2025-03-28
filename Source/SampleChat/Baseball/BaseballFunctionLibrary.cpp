@@ -47,8 +47,7 @@ FString UBaseballFunctionLibrary::ValidateAndCheckInput(const FString& Input, co
 	{
 		if (Digit < '1' || Digit > '9' || UniqueDigits.Contains(Digit))
 		{
-			return "OUT";
-			//return FString(TEXT("[OUT] : 중복된 숫자 입력"));  <== 왜 안되는지 모르겠음
+			return FString(TEXT("[OUT] : 중복된 숫자 입력"));  //<== 왜 안되는지 모르겠음
 		}
 		UniqueDigits.Add(Digit);
 	}

@@ -31,11 +31,8 @@ void ABaseballGameMode::PostLogin(APlayerController* NewPlayer)
 		if (IsValid(BaseballPS))
 		{
 			BaseballPS->SetPlayerName(TEXT("Player") + FString::FromInt(AllPlayerControllers.Num()));
-
 		}
-
 	}
-
 }
 
 void ABaseballGameMode::RecieveMessageFromClient_Implementation(APlayerController* PlayerController, const FString& Message)
@@ -64,18 +61,18 @@ void ABaseballGameMode::SendMessageToClient(APlayerController* PlayerController,
 
 void ABaseballGameMode::SendMessageToAllClient(const FString& Message)
 {
-	for (auto PC : AllPlayerControllers)
+	for (ABaseballController* BaseballPC : AllPlayerControllers)
 	{
-		PC->Client_ReceiveMessage(Message);
+		BaseballPC->Client_ReceiveMessage(Message);
 	}
 }
 
 void ABaseballGameMode::Multicast_BroadcastMessage_Implementation(const FString& Message)
 {
 	// 멀티캐스트 로직 변경해야 할것 같음
-	for (auto PC : AllPlayerControllers)
+	for (ABaseballController* BaseballPC : AllPlayerControllers)
 	{
-		PC->Client_ReceiveMessage(Message);
+		BaseballPC->Client_ReceiveMessage(Message);
 	}
 }
 
@@ -128,7 +125,7 @@ void ABaseballGameMode::ReceiveAnswerFromClient(APlayerController* PlayerControl
 
 	if (ABaseballController* BaseballPC = Cast<ABaseballController>(PlayerController))
 	{
-		ABaseballPlayerState* BaseballPS = PlayerController->GetPlayerState<ABaseballPlayerState>();
+		ABaseballPlayerState* BaseballPS = BaseballPC->GetPlayerState<ABaseballPlayerState>();
 		if (BaseballPS)
 		{
 			BaseballPS->IncreseTryCount();
@@ -168,22 +165,22 @@ void ABaseballGameMode::CheckGameEndCondition(ABaseballController* CurrentPlayer
 	bool bAllPlayersFinished = true;
 
 	// 모든 플레이어 상태 확인
-	for (ABaseballController* PC : AllPlayerControllers)
+	for (ABaseballController* BaseballPC : AllPlayerControllers)
 	{
-		ABaseballPlayerState* PS = PC->GetPlayerState<ABaseballPlayerState>();
-		if (PS)
+		ABaseballPlayerState* BaseballPS = BaseballPC->GetPlayerState<ABaseballPlayerState>();
+		if (BaseballPS)
 		{
 			// 아직 시도 횟수가 남은 플레이어가 있는지 확인
-			if (PS->GetTryCount() < 3)
+			if (BaseballPS->GetTryCount() < 3)
 			{
 				bAllPlayersFinished = false;
 			}
 
 			// 아웃되지 않은 플레이어 수 확인
-			if (!PS->IsOut())
+			if (!BaseballPS->IsOut())
 			{
 				ActivePlayers++;
-				LastActivePlayer = PC;
+				LastActivePlayer = BaseballPC;
 			}
 		}
 	}

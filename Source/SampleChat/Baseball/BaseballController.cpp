@@ -34,6 +34,7 @@ void ABaseballController::BeginPlay()
 	}
 }
 
+// 사용하지 않음
 void ABaseballController::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
@@ -44,7 +45,6 @@ void ABaseballController::OnRep_PlayerState()
 		SetPlayerName(BaseballPS->GetPlayerName());
 		//BaseballWidgetInstance->SetPlayerNameText(BaseballPS->GetPlayerName());
 	}
-
 }
 
 void ABaseballController::Server_SendMessage_Implementation(const FString& Message)
@@ -56,7 +56,6 @@ void ABaseballController::Server_SendMessage_Implementation(const FString& Messa
 	{
 		BasballGM->RecieveMessageFromClient(this, Message);
 	}
-
 }
 
 void ABaseballController::Server_SetPlayerName_Implementation(const FString& Message)
@@ -92,7 +91,7 @@ void ABaseballController::Server_PlayerReady_Implementation()
 void ABaseballController::Client_ReceiveMessage_Implementation(const FString& Message)
 {
 	UE_LOG(LogTemp, Log, TEXT("[%s] Client Receive Message : %s"), *PlayerState->GetPlayerName(), *Message);
-	if (GEngine)
+	if (IsValid(GEngine))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, Message);
 	}

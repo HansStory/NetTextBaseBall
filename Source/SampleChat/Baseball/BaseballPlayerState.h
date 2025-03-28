@@ -21,8 +21,6 @@ public:
 
 	void OnRep_PlayerName() override;
 
-	//void SetReady(bool isReady);
-
 	int32 GetTryCount() { return TryCount; }
 	void IncreseTryCount();
 
@@ -47,7 +45,4 @@ public:
 
 private:
 	bool bIsOut = false;
-
-	//bool bIsReady = false;
-
 };
