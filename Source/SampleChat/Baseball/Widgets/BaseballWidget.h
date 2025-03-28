@@ -55,6 +55,9 @@ public:
 	class UTextBlock* TextOtherPlayerName;
 
 	void SetPlayerNameText(const FString& PlayerName);
+	void SetInputAnswerEnable(bool bIsEnable);
+	void OnGameStart();
+	void OnGameReset();
 
 private:
 	void BindFunction();

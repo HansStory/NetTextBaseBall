@@ -37,6 +37,8 @@ void UBaseballWidget::InitWidget()
 
 		SetPlayerNameText(playerName);
 	}
+
+	InputAnswer->SetIsEnabled(false);
 }
 
 void UBaseballWidget::SetBaseballPC()
@@ -105,6 +107,35 @@ void UBaseballWidget::SetPlayerNameText(const FString& PlayerName)
 	if (IsValid(TextMyPlayerName))
 	{
 		TextMyPlayerName->SetText(FText::FromString(PlayerName));
+	}
+}
+
+void UBaseballWidget::SetInputAnswerEnable(bool bIsEnable)
+{
+	if (IsValid(InputAnswer))
+	{
+		InputAnswer->SetIsEnabled(bIsEnable);
+	}
+}
+
+void UBaseballWidget::OnGameStart()
+{
+	if (IsValid(InputAnswer))
+	{
+		InputAnswer->SetIsEnabled(true);
+	}
+}
+
+void UBaseballWidget::OnGameReset()
+{
+	if (IsValid(ReadyButton))
+	{
+		ReadyButton->SetIsEnabled(true);
+	}
+
+	if (IsValid(InputAnswer)
+	{
+		InputAnswer->SetIsEnabled(false);
 	}
 }
 

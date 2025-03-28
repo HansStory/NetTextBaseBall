@@ -36,9 +36,14 @@ public:
 	}
 
 protected:
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_TryCountChange)
 	int32 TryCount = 0;
+
 	int32 MaxTryCount = 3;
+
+public:
+	UFUNCTION()
+	void OnRep_TryCountChange();
 
 private:
 	bool bIsOut = false;

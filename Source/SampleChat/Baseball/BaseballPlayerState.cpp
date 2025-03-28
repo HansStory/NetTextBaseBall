@@ -2,6 +2,7 @@
 
 #include "Baseball/BaseballController.h"
 #include "Net/UnrealNetwork.h"
+#include "Baseball/Widgets/BaseballWidget.h"
 
 
 ABaseballPlayerState::ABaseballPlayerState()
@@ -44,6 +45,27 @@ void ABaseballPlayerState::OnRep_PlayerName()
 void ABaseballPlayerState::IncreseTryCount()
 {
 	TryCount++;
+
+	ENetMode NetMode = GetNetMode();
+	if (NetMode == NM_Standalone || NetMode == NM_ListenServer)
+	{
+		OnRep_TryCountChange();
+	}
+
+}
+
+void ABaseballPlayerState::OnRep_TryCountChange()
+{
+	if (ABaseballController* BaseballPC = Cast<ABaseballController>(GetPlayerController()))
+	{
+		if (TryCount >= MaxTryCount)
+		{
+			if(BaseballPC->BaseballWidgetInstance)
+			{
+				BaseballPC->BaseballWidgetInstance->SetInputAnswerEnable(false);
+			}
+		}
+	}
 }
 
 //void ABaseballPlayerState::SetReady(bool isReady)
