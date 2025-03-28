@@ -25,8 +25,12 @@ void ABaseballPlayerState::OnRep_PlayerName()
 {
 	Super::OnRep_PlayerName();
 
+	FString ChangedName = GetPlayerName();
+
+	UE_LOG(LogTemp, Log, TEXT("OnRep_PlayerName() => Player Name Changed : %s "), *ChangedName);
+
 	if (ABaseballController* BaseballPC = Cast<ABaseballController>(GetPlayerController()))
 	{
-		BaseballPC->SetPlayerName(GetPlayerName());
+		BaseballPC->SetPlayerName(*ChangedName);
 	}
 }

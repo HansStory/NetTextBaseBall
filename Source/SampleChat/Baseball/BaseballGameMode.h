@@ -22,6 +22,12 @@ public:
 
 	void GenerateRandomNum();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void RecieveMessageFromClient(APlayerController* PlayerController, const FString& Message);
+	void SendMessageToClient(APlayerController* PlayerController, const FString& Message);
+
+	UFUNCTION(NetMulticast, Unreliable)
+	void Multicast_BroadcastMessage(const FString& Message);
 
 	void SetPlayerNickname(APlayerController* PlayerController, const FString& NewName);
 

@@ -48,6 +48,9 @@ public:
 	UFUNCTION()
 	void ShowEntryWidget();
 
+	UFUNCTION()
+	void ShowMainWidget();
+
 	UFUNCTION(Server, Reliable)
 	void Server_SendMessage(const FString& Message);
 
@@ -60,9 +63,13 @@ public:
 	UFUNCTION(Client, Reliable)
 	void Client_ReceiveMessage(const FString& Message);
 
+	UFUNCTION(Client, Reliable)
+	void Client_ReceiveAnswer(const FString& Message);
+
 
 	void SetPlayerName(const FString& PlayerName);
-
+	UFUNCTION(Client, Reliable)
+	void Client_ShowMainWidget();
 
 
 	// 게임 참가 시도

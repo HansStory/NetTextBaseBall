@@ -56,6 +56,39 @@ void ABaseballGameMode::GenerateRandomNum()
 	ServerGenerateNum = RandomNumber;
 }
 
+void ABaseballGameMode::RecieveMessageFromClient_Implementation(APlayerController* PlayerController, const FString& Message)
+{
+	FString PlayerName = *PlayerController->PlayerState->GetPlayerName();
+	UE_LOG(LogTemp, Warning, TEXT("[Server] Received Message From : %s"), *PlayerName);
+
+	FString FormattedString = FString::Printf(TEXT("[%s] %s"), *PlayerName, *Message);
+	Multicast_BroadcastMessage(FormattedString);
+
+	//SendMessageToClient(PlayerController, Message);
+}
+
+bool ABaseballGameMode::RecieveMessageFromClient_Validate(APlayerController* PlayerController, const FString& Message)
+{
+	return true;
+}
+
+void ABaseballGameMode::SendMessageToClient(APlayerController* PlayerController, const FString& Message)
+{
+	if (ABaseballController* BaseballPC = Cast<ABaseballController>(PlayerController))
+	{
+		BaseballPC->Client_ReceiveMessage(Message);
+	}
+}
+
+void ABaseballGameMode::Multicast_BroadcastMessage_Implementation(const FString& Message)
+{
+	for (auto PC : AllPlayerControllers)
+	{
+		PC->Client_ReceiveMessage(Message);
+	}
+}
+
+
 void ABaseballGameMode::SetPlayerNickname(APlayerController* PlayerController, const FString& NewName)
 {
 	if (PlayerController)
@@ -63,8 +96,14 @@ void ABaseballGameMode::SetPlayerNickname(APlayerController* PlayerController, c
 		ABaseballPlayerState* PS = PlayerController->GetPlayerState<ABaseballPlayerState>();
 		if (PS)
 		{
+			UE_LOG(LogTemp, Log, TEXT("[Server] %s Try Change Player Name to:%s"), *PlayerController->GetName(), *NewName);
 			PS->SetPlayerName(NewName);
-			UE_LOG(LogTemp, Log, TEXT("Player %s changed nickname to: %s"), *PlayerController->GetName(), *NewName);
 		}
+
+		//ABaseballController* BaseballPC = Cast<ABaseballController>(PlayerController);
+		//if (BaseballPC)
+		//{
+		//	BaseballPC->Client_ShowMainWidget();
+		//}
 	}
 }
