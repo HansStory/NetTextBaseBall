@@ -12,6 +12,7 @@ class UTextBlock;
 
 class UChatMessageWidget;
 class UPlayerListItemWidget;
+class ABaseballPlayerState;
 
 UCLASS()
 class SAMPLECHAT_API UMainWidget : public UUserWidget
@@ -22,20 +23,23 @@ protected:
     virtual void NativeConstruct() override;
 
 public:
-    // 플레이어 참가
-    void SetPlayerName(int32 Index, const FString& PlayerName);
+    void InitMainWidget(const TArray<ABaseballPlayerState*>& PlayerStates);
 
+    // 플레이어 참가
+    //void SetPlayerName(int32 Index, const FString& PlayerName);
+
+    TMap<int32, class UTextBlock*> PlayerNameWidgets;
 
     TArray<TObjectPtr<UPlayerListItemWidget>> PlayerTexts;
 
-
+    void SetPlayerNameText(const FString& PlayerName);
 
 
     // =================================
 
-    void AddChatMessage(const FString& Message);
-    void AddPlayerToList(const FString& PlayerName, int32 PlayerIndex);
-    void ClearPlayerList();
+    //void AddChatMessage(const FString& Message);
+    //void AddPlayerToList(const FString& PlayerName, int32 PlayerIndex);
+    //void ClearPlayerList();
 
     UPROPERTY(meta = (BindWidget))
     UScrollBox* ChatScrollBox;

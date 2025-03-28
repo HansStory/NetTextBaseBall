@@ -97,8 +97,6 @@ void UBaseballWidget::OnClickReadyButton()
 	{
 		BaseballPC->Server_PlayerReady();
 		ReadyButton->SetIsEnabled(false);
-		//BaseballPC->Server_SendAnswer(Text.ToString());
-		//InputAnswer->SetText(FText());
 	}
 }
 
@@ -110,13 +108,6 @@ void UBaseballWidget::SetPlayerNameText(const FString& PlayerName)
 	}
 }
 
-//void UBaseballWidget::UpdateOtherPlayerName(const FString& Name)
-//{
-//	if (IsValid(TextOtherPlayerName))
-//	{
-//		TextOtherPlayerName->SetText(FText::FromString(Name));
-//	}
-//}
 
 void UBaseballWidget::BindFunction()
 {

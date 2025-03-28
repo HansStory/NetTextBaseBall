@@ -14,7 +14,6 @@ void UEntryWidget::NativeConstruct()
 	{
 		ButtonSetUserId->OnClicked.AddDynamic(this, &UEntryWidget::OnClickSetUserIdButton);
 	}
-
 }
 
 void UEntryWidget::OnClickSetUserIdButton()
@@ -26,10 +25,14 @@ void UEntryWidget::OnClickSetUserIdButton()
 		{
 			if (ABaseballController* BaseballPC = Cast<ABaseballController>(GetOwningPlayer()))
 			{
-				BaseballPC->PlayerState->SetPlayerName(IDText);
+				if (IsValid(BaseballPC))
+				{
+					BaseballPC->Server_SetPlayerName(IDText);
+					InputUserId->SetText(FText());
+				}
 
-				FString PlayerName = BaseballPC->PlayerState->GetPlayerName();
-				UE_LOG(LogTemp, Warning, TEXT("%s"), *PlayerName);
+				//FString PlayerName = BaseballPC->PlayerState->GetPlayerName();
+				//UE_LOG(LogTemp, Warning, TEXT("%s"), *PlayerName);
 
 				//BaseballPC->PlayerState->SetPlayerName(IDText);
 				//BaseballPC->Server_JoinGame(IDText);
