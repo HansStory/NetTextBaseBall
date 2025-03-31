@@ -13,7 +13,7 @@
 
 -  정상 입력시
 
-![image](./images/정상입력.png)
+![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/3%ED%9A%8C%EC%9E%85%EB%A0%A5%EC%8B%9C%EC%9E%85%EB%A0%A5%EC%B0%BD%EB%B9%84%ED%99%9C%EC%84%B1%ED%99%94.png)
 
 # 입력 오류 Case
 - Fail Case1 : 입력서식 오류 ( '/'를 입력하지 않을 경우)
