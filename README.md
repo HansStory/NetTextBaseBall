@@ -1,7 +1,7 @@
 # ⚾NetTextBaseBall
 
 ## 게임 준비단계
-  ![image](./images/준비완료.png)
+  ![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/%EC%A4%80%EB%B9%84%EC%99%84%EB%A3%8C.png)
 
 플레이어들은 원하는 닉네임을 설정 후 Ready버튼을 클릭한다.
 
@@ -18,24 +18,24 @@
 # 입력 오류 Case
 - Fail Case1 : 입력서식 오류 ( '/'를 입력하지 않을 경우)
 
-![image](./images/입력서식오류.png)
+![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/%EC%9E%85%EB%A0%A5%EC%84%9C%EC%8B%9D%EC%98%A4%EB%A5%98.png)
 
 - Fail Case2 : 입력길이 불일치 ( 숫자 입력이 3개 초과 및 미만일 경우 )
 
-![image](./images/입력길이초과.png)
+![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/%EC%9E%85%EB%A0%A5%EA%B8%B8%EC%9D%B4%EC%B4%88%EA%B3%BC.png)
 
 - Fail Case3 : 중복된 숫자 입력
 
-![image](./images/중복숫자입력.png)
+![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/%EC%A4%91%EB%B3%B5%EC%88%AB%EC%9E%90%EC%9E%85%EB%A0%A5.png)
 
 - Fail Case4 : 숫자입력 X (숫자가 아닌 문자열일 경우)
 
-![image](./images/숫자입력X.png)
+![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/%EC%88%AB%EC%9E%90%EC%9E%85%EB%A0%A5X.png)
 
 # 기회 제한 및 무승부 처리
 
-![image](./images/3회입력시입력창비활성화.png)
-![image](./images/무승부.png)
+![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/3%ED%9A%8C%EC%9E%85%EB%A0%A5%EC%8B%9C%EC%9E%85%EB%A0%A5%EC%B0%BD%EB%B9%84%ED%99%9C%EC%84%B1%ED%99%94.png)
+![image](https://github.com/HansStory/NetTextBaseBall/blob/main/Images/%EB%AC%B4%EC%8A%B9%EB%B6%80.png)
 
 
 # [내일배움캠프] 9번 과제 
