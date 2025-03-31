@@ -1,8 +1,44 @@
-# NetTextBaseBall
-[내일배움캠프] 9번 과제 필수기능, 도전기능
+# ⚾NetTextBaseBall
+
+## 게임 준비단계
+  ![image](./images/준비완료.png)
+
+플레이어들은 원하는 닉네임을 설정 후 Ready버튼을 클릭한다.
+
+참가한 모든 플레이어가 준비완료되면 서버에서 랜덤숫자를 생성 하고
+
+게임이 시작됩니다.
+
+## 게임 입력
+
+-  정상 입력시
+
+![image](./images/정상입력.png)
+
+# 입력 오류 Case
+- Fail Case1 : 입력서식 오류 ( '/'를 입력하지 않을 경우)
+
+![image](./images/입력서식오류.png)
+
+- Fail Case2 : 입력길이 불일치 ( 숫자 입력이 3개 초과 및 미만일 경우 )
+
+![image](./images/입력길이초과.png)
+
+- Fail Case3 : 중복된 숫자 입력
+
+![image](./images/중복숫자입력.png)
+
+- Fail Case4 : 숫자입력 X (숫자가 아닌 문자열일 경우)
+
+![image](./images/숫자입력X.png)
+
+# 기회 제한 및 무승부 처리
+
+![image](./images/3회입력시입력창비활성화.png)
+![image](./images/무승부.png)
 
 
-
+# [내일배움캠프] 9번 과제 
 ## 1️⃣ **Intro :  숫자 야구 게임을 만들어 봅시다.**
 
 비디오 게임의 할아버지의 할아버지로 만들어진지 100년이 넘는 숫자 야구 게임을 만들어 봅시다. 원조 게임은 4자리 숫자로 하는 Bulls and Cows 입니다.
